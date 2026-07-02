@@ -1,31 +1,29 @@
+# GitHub Actions Workflow: Vampi build pipeline with security test
 name: Vampi build pipeline with security test
 
 on:
-  push:
-  repository_dispatch:
-  workflow_dispatch:
+  push:                         # Trigger on any push
+  repository_dispatch:         # Allow external systems to trigger via repository_dispatch
+  workflow_dispatch:           # Allow manual triggering from the GitHub UI
 
 jobs:
   scan:
-    name: Build and Security Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest     # Use the latest Ubuntu runner
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2  # Check out the repository contents
 
-      - name: Start VAmPI
-        run: docker compose up -d
+      - name: Run VAmPI 
+        run: docker compose up -d  # Start VAmPI API using Docker Compose in detached mode
 
-      - name: Wait for VAmPI
-        run: |
-          curl http://localhost:5002/ \
-            --retry 10 \
-            --retry-delay 5 \
-            --retry-connrefused
+      - name: Test VAmPI
+        run: sleep 5 && curl http://localhost:5002/ --retry 10 --retry-delay 1 
+        # Wait for service to start, then ping the API to ensure it's up (retry up to 10 times)
 
-      - name: Initialize Database
-        run: curl http://localhost:5002/createdb
+      - name: Createdb
+        run: curl http://localhost:5002/createdb 
+        # Initialize VAmPI with test data
 
       - name: Run Active Scan
         uses: nonamesec/active-scan-action@v1
