@@ -46,7 +46,7 @@ jobs:
           --test-group-id=6767cf71-754f-4119-85a0-7497931b1198
           --branch-name=${{ github.head_ref || github.ref_name }}
           # --env-id=272ee7dd-4c3f-455d-b812-456557630534
-          # --severity-threshold=medium
+          --severity-threshold=none
           --concurrency=1
           --analyze
 
