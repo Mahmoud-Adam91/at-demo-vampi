@@ -45,8 +45,7 @@ jobs:
           --api-token=${{ secrets.ACTIVE_API_TOKEN }} 
           --test-group-id=892b51de-67cf-4328-beea-3ade61bcdeb2
           --branch-name=${{ github.head_ref || github.ref_name }}
-          # --env-id=272ee7dd-4c3f-455d-b812-456557630534
-          --severity-threshold=medium
+          --severity-threshold=high
           --concurrency=1
           --analyze
 
